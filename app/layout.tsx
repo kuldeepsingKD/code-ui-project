@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ViewTransitions } from "next-view-transitions";
 import { RootProvider } from "fumadocs-ui/provider";
-import { ThemeProvider } from "next-themes";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -26,21 +26,14 @@ export default function RootLayout({
 }>) {
   return (
     <ViewTransitions>
-      <html lang="en">
+      <html lang="en" suppressHydrationWarning> {/* 👈 Fix #1 */}
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          <RootProvider>
-          <ThemeProvider
-              attribute="class"
-              defaultTheme="system"
-              enableSystem
-              disableTransitionOnChange
-            >
+          <RootProvider> {/* 👈 Fix #2: RootProvider handles theming, no ThemeProvider needed */}
             <div className="flex flex-col min-h-screen">
               <div className="flex-1">{children}</div>
             </div>
-            </ThemeProvider>
           </RootProvider>
         </body>
       </html>
